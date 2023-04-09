@@ -3,5 +3,6 @@ dist*/
 __pycache__
 *.pyc
 
-*project_log*
-*/samples/
+project_log
+samples/
+asciinema/
