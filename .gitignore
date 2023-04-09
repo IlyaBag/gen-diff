@@ -4,4 +4,4 @@ __pycache__
 *.pyc
 
 *project_log*
-samples/
+*/samples/
