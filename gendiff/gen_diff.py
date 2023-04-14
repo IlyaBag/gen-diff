@@ -24,4 +24,4 @@ def generate_diff(file_path1, file_path2):
         else:
             diff[f'+ {key}'] = file2[key]
 
-    return json.dumps(diff, indent=2).replace('"', '')    
+    return json.dumps(diff, indent=2).replace('"', '')
