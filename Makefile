@@ -1,7 +1,21 @@
 install:
 	poetry install
 
-build:
+
+selfcheck:
+	poetry check
+
+test:
+	poetry run pytest
+
+lint:
+	poetry run flake8 gendiff
+
+
+check: selfcheck test lint
+
+
+build: check
 	poetry build
 
 publish:
@@ -10,8 +24,6 @@ publish:
 package-install:
 	python3 -m pip install --user dist/*.whl
 
-lint:
-	poetry run flake8 gendiff
 
 tree:
-	tree --gitignore -I *cache* 
+	tree -a -I .git --gitignore -I *cache* 
