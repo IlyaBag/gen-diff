@@ -1,9 +1,11 @@
 def fix_syntax(string):
     if string in ('True', 'False'):
-        return string.lower()
+        return ' ' + string.lower()
     if string == 'None':
-        return 'null'
-    return string
+        return ' ' + 'null'
+    if string == '':
+        return ''
+    return ' ' + string
 
 
 def show_diff(diff, replacer=' ', indent_length=4):
@@ -16,7 +18,7 @@ def show_diff(diff, replacer=' ', indent_length=4):
                 # может отдельную функцию для словарей?
                 printable_diff += f'\n{cur_indent}{key}: {inner(cur_diff[key], cur_indent_length)}'
             else:
-                printable_diff += f'\n{cur_indent}{key}: {fix_syntax(cur_diff[key])}'
+                printable_diff += f'\n{cur_indent}{key}:{fix_syntax(cur_diff[key])}'
         printable_diff += '\n' + replacer * accum_indent + '}'
         return printable_diff
     return inner(diff, 0)

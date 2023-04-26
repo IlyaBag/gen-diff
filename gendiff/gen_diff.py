@@ -29,18 +29,39 @@ def generate_diff(file_path1, file_path2):
             if key in file1:
                 if key in file2:
                     if file1[key] == file2[key]:
-                        diff[f'  {key}'] = f'{file1[key]}'
-                    else:
-                        if isinstance(file1[key], dict) and isinstance(file2[key], dict):
+                        if isinstance(file1[key], dict):
                             inner_diff = inner(file1[key], file2[key])
                             diff[f'  {key}'] = inner_diff
+                        else:
+                            diff[f'  {key}'] = f'{file1[key]}'
+                    else:
+                        if isinstance(file1[key], dict):
+                            if isinstance(file2[key], dict):
+                                inner_diff = inner(file1[key], file2[key])
+                                diff[f'  {key}'] = inner_diff
+                            else:
+                                inner_diff = inner(file1[key], file1[key])
+                                diff[f'- {key}'] = inner_diff
+                                diff[f'+ {key}'] = f'{file2[key]}'
+                        elif isinstance(file2[key], dict):
+                            inner_diff = inner(file2[key], file2[key])
+                            diff[f'- {key}'] = f'{file1[key]}'
+                            diff[f'+ {key}'] = inner_diff
                         else:
                             diff[f'- {key}'] = f'{file1[key]}'
                             diff[f'+ {key}'] = f'{file2[key]}'
                 else:
-                    diff[f'- {key}'] = f'{file1[key]}'
+                    if isinstance(file1[key], dict):
+                        inner_diff = inner(file1[key], file1[key])
+                        diff[f'- {key}'] = inner_diff
+                    else:
+                        diff[f'- {key}'] = f'{file1[key]}'
             else:
-                diff[f'+ {key}'] = f'{file2[key]}'
+                if isinstance(file2[key], dict):
+                    inner_diff = inner(file2[key], file2[key])
+                    diff[f'+ {key}'] = inner_diff
+                else:
+                    diff[f'+ {key}'] = f'{file2[key]}'
     # diff = []
     # for key in keys:
     #     if key in file1:
