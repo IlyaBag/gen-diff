@@ -1,6 +1,4 @@
-{
-  "memorized": true,
-  "timeout": 20,
-  "verbose": true,
-  "host": "hexlet.io"
-}
+memorized: true
+timeout: 20
+verbose: true
+host: hexlet.io
