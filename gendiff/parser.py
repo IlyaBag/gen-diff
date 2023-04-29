@@ -8,22 +8,56 @@ def fix_syntax(string):
     return ' ' + string
 
 
+def is_leaf_node(item):
+    if '_state_' in item and '_value_' in item:
+        return True
+    return False
+
+
 def show_diff(diff, replacer=' ', indent_length=4):
-    def inner(cur_diff, accum_indent):
-        cur_indent_length = accum_indent + indent_length
-        cur_indent = replacer * (cur_indent_length - 2)
-        printable_diff = '{'
-        for key in cur_diff:
-            if isinstance(cur_diff[key], dict):
-                # может отдельную функцию для словарей?
-                printable_diff += f'\n{cur_indent}{key}: {inner(cur_diff[key], cur_indent_length)}'
+    def inner(cur_diff, accum_indent_length):
+        
+        def get_printable_value(data, depth=-1):
+            depth += 1
+            if isinstance(data, dict):
+                data_keys = list(data.keys())
+                data_keys.sort()
+                nested_indent = full_cur_indent + replacer * (indent_length * depth)
+                deep_nested_indent = nested_indent + replacer * indent_length
+                printable_value = ' {'
+                for key in data_keys:
+                    data_val = get_printable_value(data[key], depth)
+                    printable_value += f'\n{deep_nested_indent}{key}:{data_val}'
+                printable_value += f'\n{nested_indent}{"}"}'
             else:
-                printable_diff += f'\n{cur_indent}{key}:{fix_syntax(cur_diff[key])}'
-        printable_diff += '\n' + replacer * accum_indent + '}'
+                printable_value = fix_syntax(str(data))
+            return printable_value
+
+        cur_indent_length = accum_indent_length + indent_length
+        accum_indent = replacer * accum_indent_length
+        cur_indent = replacer * (cur_indent_length - 2)
+        full_cur_indent = replacer * (cur_indent_length)
+
+        printable_diff = '{'
+
+        cur_keys = list(cur_diff.keys())
+        cur_keys.sort()
+        for key in cur_keys:
+            cur_value = cur_diff[key]
+            if is_leaf_node(cur_value):
+                # преоразование в строку
+                state = cur_value['_state_']
+                value = get_printable_value(cur_value['_value_'])
+                printable_diff += f'\n{cur_indent}{state} {key}:{value}'
+                if '_value2_' in cur_value:
+                    state2 = cur_value['_state2_']
+                    value2 = get_printable_value(cur_value['_value2_'])
+                    printable_diff += f'\n{cur_indent}{state2} {key}:{value2}'
+            else:
+                # рекурсивный вызов
+                value = inner(cur_value, cur_indent_length)
+                printable_diff += f'\n{full_cur_indent}{key}: {value}'
+
+        printable_diff += f'\n{accum_indent}{"}"}'
         return printable_diff
-        return inner(diff, 0)
-    # printable_diff = '{'
-    # for pair in diff:
-    #     printable_diff += f'\n  {pair[0]}: {fix_syntax(pair[1])}'
-    # printable_diff += '\n}'
-    # return printable_diff
+    return inner(diff, 0)

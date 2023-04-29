@@ -39,19 +39,22 @@ def generate_diff(file_path1, file_path2):
                 '_value_': data2[key]
             }
         for key in mutual_keys:
-            if data1[key] == data2[key]:
+            value1 = data1[key]
+            value2 = data2[key]
+            if value1 == value2:
                 diff[key] = {
-                    '_state_': '=',
-                    '_value_': data1[key]
+                    '_state_': ' ',
+                    '_value_': value1
                 }
             else:
-                if isinstance(data1[key], dict) and isinstance(data2[key], dict):
-                    diff[key] = inner(data1[key], data2[key])  # рекурсивная функция строит дифф дальше (дети)
+                if isinstance(value1, dict) and isinstance(value2, dict):
+                    diff[key] = inner(value1, value2)
                 else:
                     diff[key] = {
-                        '_state_': '-+',
-                        '_value_': data1[key], 
-                        '_value2_': data2[key]
+                        '_state_': '-',
+                        '_value_': value1,
+                        '_state2_': '+',
+                        '_value2_': value2
                     }
 
     # def inner(file1, file2):
@@ -117,5 +120,3 @@ def generate_diff(file_path1, file_path2):
         return diff
     return show_diff(inner(file1, file2))
     # return inner(file1, file2)
-
-# print(generate_diff('tests/fixtures/nested/file1.json', 'tests/fixtures/nested/file2.json'))
