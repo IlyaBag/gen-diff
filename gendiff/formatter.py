@@ -14,7 +14,7 @@ def is_leaf_node(item):
     return False
 
 
-def stylish(diff, replacer=' ', indent_length=4):
+def stylish(diff, replacer=' ', indent_length=4):  # noqa: C901
     def inner(cur_diff, accum_indent_length):
 
         def get_printable_value(data, depth=-1):

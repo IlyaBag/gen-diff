@@ -15,7 +15,7 @@ def file_parse(path):
     return data
 
 
-def generate_diff(file_path1, file_path2, formatter=stylish):
+def generate_diff(file_path1, file_path2, formatter=stylish):  # noqa: C901
     file1 = file_parse(file_path1)
     file2 = file_parse(file_path2)
 
