@@ -14,16 +14,19 @@ def is_leaf_node(item):
     return False
 
 
-def show_diff(diff, replacer=' ', indent_length=4):
+def stylish(diff, replacer=' ', indent_length=4):
     def inner(cur_diff, accum_indent_length):
-        
+
         def get_printable_value(data, depth=-1):
             depth += 1
             if isinstance(data, dict):
                 data_keys = list(data.keys())
                 data_keys.sort()
-                nested_indent = full_cur_indent + replacer * (indent_length * depth)
-                deep_nested_indent = nested_indent + replacer * indent_length
+
+                additional_indent = replacer * indent_length
+                nested_indent = full_cur_indent + additional_indent * depth
+                deep_nested_indent = nested_indent + additional_indent
+                
                 printable_value = ' {'
                 for key in data_keys:
                     data_val = get_printable_value(data[key], depth)

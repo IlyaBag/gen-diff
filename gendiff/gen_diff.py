@@ -1,6 +1,6 @@
 import json
 import yaml
-from gendiff.parser import show_diff
+from gendiff.formatter import stylish
 
 
 def file_parse(path):
@@ -15,7 +15,7 @@ def file_parse(path):
     return data
 
 
-def generate_diff(file_path1, file_path2):
+def generate_diff(file_path1, file_path2, formatter=stylish):
     file1 = file_parse(file_path1)
     file2 = file_parse(file_path2)
 
@@ -57,66 +57,5 @@ def generate_diff(file_path1, file_path2):
                         '_value2_': value2
                     }
 
-    # def inner(file1, file2):
-    #     common_data = set(file1.keys()) | set(file2.keys())
-    #     keys = list(common_data)
-    #     keys.sort()
-
-    #     diff = {}
-    #     for key in keys:
-    #         val1 = file1[key]
-    #         val2 = file2[key]
-    #         if key in file1:
-    #             if key in file2:
-    #                 if val1 == val2:
-    #                     if isinstance(val1, dict):
-    #                         inner_diff = inner(val1, val2)
-    #                         diff[f'  {key}'] = inner_diff
-    #                     else:
-    #                         diff[f'  {key}'] = f'{val1}'
-    #                 else:
-    #                     if isinstance(val1, dict):
-    #                         if isinstance(val2, dict):
-    #                             inner_diff = inner(val1, val2)
-    #                             diff[f'  {key}'] = inner_diff
-    #                         else:
-    #                             inner_diff = inner(val1, val1)
-    #                             diff[f'- {key}'] = inner_diff
-    #                             diff[f'+ {key}'] = f'{val2}'
-    #                     elif isinstance(val2, dict):
-    #                         inner_diff = inner(val2, val2)
-    #                         diff[f'- {key}'] = f'{val1}'
-    #                         diff[f'+ {key}'] = inner_diff
-    #                     else:
-    #                         diff[f'- {key}'] = f'{val1}'
-    #                         diff[f'+ {key}'] = f'{val2}'
-    #             else:
-    #                 if isinstance(val1, dict):
-    #                     inner_diff = inner(val1, val1)
-    #                     diff[f'- {key}'] = inner_diff
-    #                 else:
-    #                     diff[f'- {key}'] = f'{val1}'
-    #         else:
-    #             if isinstance(val2, dict):
-    #                 inner_diff = inner(val2, val2)
-    #                 diff[f'+ {key}'] = inner_diff
-    #             else:
-    #                 diff[f'+ {key}'] = f'{val2}'
-    # diff = []
-    # for key in keys:
-    #     if key in file1:
-    #         if key in file2:
-    #             if file1[key] == file2[key]:
-    #                 diff.append((f'  {key}', f'{file1[key]}'))
-    #             else:
-    #                 diff.append((f'- {key}', f'{file1[key]}'))
-    #                 diff.append((f'+ {key}', f'{file2[key]}'))
-    #         else:
-    #             diff.append((f'- {key}', f'{file1[key]}'))
-    #     else:
-    #         diff.append((f'+ {key}', f'{file2[key]}'))
-
-        # printable_diff = show_diff(diff)
         return diff
-    return show_diff(inner(file1, file2))
-    # return inner(file1, file2)
+    return formatter(inner(file1, file2))
