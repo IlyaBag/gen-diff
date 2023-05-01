@@ -26,7 +26,7 @@ def stylish(diff, replacer=' ', indent_length=4):
                 additional_indent = replacer * indent_length
                 nested_indent = full_cur_indent + additional_indent * depth
                 deep_nested_indent = nested_indent + additional_indent
-                
+
                 printable_value = ' {'
                 for key in data_keys:
                     data_val = get_printable_value(data[key], depth)
