@@ -13,6 +13,7 @@ file2_yaml_nested = 'tests/fixtures/nested/file2.yml'
 correct_diff = open('tests/fixtures/correct_diff.txt').read()
 wrong_diff = open('tests/fixtures/wrong_diff.txt').read()
 correct_nested_diff = open('tests/fixtures/correct_nested_diff.txt').read()
+correct_plain_diff = open('tests/fixtures/correct_plain_diff.txt').read()
 
 
 def test_generate_diff_json():
@@ -32,3 +33,11 @@ def test_generate_diff_json_nested():
 def test_generate_diff_yaml_nested():
     diff = generate_diff(file1_yaml_nested, file2_yaml_nested)
     assert  diff == correct_nested_diff
+
+def test_generate_diff_json_plain():
+    diff = generate_diff(file1_json_nested, file2_json_nested, 'plain')
+    assert  diff == correct_plain_diff
+
+def test_generate_diff_yaml_plain():
+    diff = generate_diff(file1_yaml_nested, file2_yaml_nested, 'plain')
+    assert  diff == correct_plain_diff

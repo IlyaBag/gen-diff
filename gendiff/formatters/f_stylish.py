@@ -17,8 +17,7 @@ def is_leaf_node(item):
 def stylish(diff, replacer=' ', indent_length=4):  # noqa: C901
     def inner(cur_diff, accum_indent_length):
 
-        def get_printable_value(data, depth=-1):
-            depth += 1
+        def get_printable_value(data, depth=0):
             if isinstance(data, dict):
                 data_keys = list(data.keys())
                 data_keys.sort()
@@ -29,7 +28,7 @@ def stylish(diff, replacer=' ', indent_length=4):  # noqa: C901
 
                 printable_value = ' {'
                 for key in data_keys:
-                    data_val = get_printable_value(data[key], depth)
+                    data_val = get_printable_value(data[key], depth + 1)
                     printable_value += f'\n{deep_nested_indent}{key}:{data_val}'
                 printable_value += f'\n{nested_indent}{"}"}'
             else:
