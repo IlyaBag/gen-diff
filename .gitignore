@@ -8,3 +8,4 @@ coverage.xml
 
 project_log
 asciinema/
+tests/fixtures/mein*
