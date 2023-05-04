@@ -15,3 +15,6 @@
 
 ### Work with nested json and yaml files:
 [![asciicast](https://asciinema.org/a/3CWBl0Fsm3DYEGFZoZGMY129j.svg)](https://asciinema.org/a/3CWBl0Fsm3DYEGFZoZGMY129j)
+
+### Work with output formatter "plain":
+[![asciicast](https://asciinema.org/a/UcWLQAM8Jvckmgn28CUlSNVL9.svg)](https://asciinema.org/a/UcWLQAM8Jvckmgn28CUlSNVL9)
