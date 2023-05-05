@@ -9,3 +9,4 @@ coverage.xml
 project_log
 asciinema/
 tests/fixtures/mein*
+tests/func_launch.py
