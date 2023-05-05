@@ -18,3 +18,6 @@
 
 ### Work with output formatter "plain":
 [![asciicast](https://asciinema.org/a/UcWLQAM8Jvckmgn28CUlSNVL9.svg)](https://asciinema.org/a/UcWLQAM8Jvckmgn28CUlSNVL9)
+
+### Work with output formatter "JSON":
+[![asciicast](https://asciinema.org/a/DLNDCXClDfsPi17EcBf6cxkXA.svg)](https://asciinema.org/a/DLNDCXClDfsPi17EcBf6cxkXA)
