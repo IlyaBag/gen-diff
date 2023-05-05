@@ -3,8 +3,8 @@ def fix_syntax(string):
         return ' ' + string.lower()
     if string == 'None':
         return ' null'
-    if string == '':
-        return ''
+    # if string == '':
+    #     return ''
     return ' ' + string
 
 
