@@ -6,6 +6,7 @@ from gendiff.formatters import *  # noqa: F403
 format_args = {
     'stylish': stylish,  # noqa: F405
     'plain': plain,  # noqa: F405
+    'JSON': json_output,  # noqa: F405
 }
 
 

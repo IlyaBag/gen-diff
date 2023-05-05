@@ -1,4 +1,5 @@
 from gendiff.gen_diff import generate_diff
+import json
 
 
 file1_json = 'tests/fixtures/flat/file1.json'
@@ -41,3 +42,8 @@ def test_generate_diff_json_plain():
 def test_generate_diff_yaml_plain():
     diff = generate_diff(file1_yaml_nested, file2_yaml_nested, 'plain')
     assert  diff == correct_plain_diff
+
+
+def test_generate_diff_output_json():
+    diff = generate_diff(file1_yaml_nested, file2_yaml_nested, 'JSON')
+    assert json.loads(diff)
