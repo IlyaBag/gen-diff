@@ -1,7 +1,9 @@
 def fix_syntax(string):
-    if string in ('True', 'False'):
-        return string.lower()
-    if string == 'None':
+    if isinstance(string, bool):
+        return str(string).lower()
+    if isinstance(string, int):
+        return string
+    if string is None:
         return 'null'
     return f"'{string}'"
 
@@ -28,12 +30,12 @@ def plain(diff, key_path_global=[]):
             if isinstance(val1, dict):
                 val1 = '[complex value]'
             else:
-                val1 = fix_syntax(str(val1))
+                val1 = fix_syntax(val1)
             val2 = value.get('_value2_', '')
             if isinstance(val2, dict):
                 val2 = '[complex value]'
             else:
-                val2 = fix_syntax(str(val2))
+                val2 = fix_syntax(val2)
 
             states = {
                 "-": "removed",
