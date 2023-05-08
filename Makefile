@@ -10,7 +10,7 @@ test:
 	poetry run pytest
 
 lint:
-	poetry run flake8 gendiff
+	poetry run flake8 gendiff tests/test_gen_diff.py
 
 
 
