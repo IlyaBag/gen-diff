@@ -14,7 +14,7 @@ def file_parse(path):
     file_extension = path.rsplit(sep='.', maxsplit=1)[1]
     file_extension.lower()
 
-    data = {}
+    data = None
     if file_extension == 'json':
         data = json.load(open(path))
     elif file_extension == 'yml' or file_extension == 'yaml':
@@ -65,5 +65,10 @@ def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
                     }
 
         return diff
+
     formatter = format_args.get(output, lambda _: 'Unknown output format')
-    return formatter(inner(file1, file2))
+
+    try:
+        return formatter(inner(file1, file2))
+    except AttributeError:
+        return 'Unknown file type'
