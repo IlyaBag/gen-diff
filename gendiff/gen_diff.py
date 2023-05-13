@@ -3,11 +3,11 @@ import yaml
 from gendiff.formatters import *  # noqa: F403
 
 
-format_args = {
+FORMAT_ARGS = {
     'stylish': stylish,  # noqa: F405
     'plain': plain,  # noqa: F405
     'json': json_output,  # noqa: F405
-}
+    }
 
 
 def file_parse(path):
@@ -66,7 +66,7 @@ def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
 
         return diff
 
-    formatter = format_args.get(output, lambda _: 'Unknown output format')
+    formatter = FORMAT_ARGS.get(output, lambda _: 'Unknown output format')
 
     try:
         return formatter(inner(file1, file2))

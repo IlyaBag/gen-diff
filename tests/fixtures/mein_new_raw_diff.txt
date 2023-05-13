@@ -1,0 +1,86 @@
+{
+  'group2': ('-',{
+    'abc': ('n', 12345),
+    'deep': ('n', {
+      'id': ('n', 45)
+    })
+  }),
+
+  ('group3', 'added'): {
+    ('deep', 'nested'): {
+      ('id', 'nested'): {
+        ('number', 'nested'): 45
+      }
+    },
+    ('fee', 'nested'): 100500
+  },
+
+  'common': {
+    'setting2': {
+      '_state_': '-',
+      '_value_': 200
+    },
+    'setting4': {
+      '_state_': '+',
+      '_value_': 'blah blah'
+    },
+    'follow': {
+      '_state_': '+',
+      '_value_': False
+    },
+    'setting5': {
+      '_state_': '+',
+      '_value_': {
+        'key5': 'value5'
+      }
+    },
+    'setting6': {
+      'ops': {
+        '_state_': '+',
+        '_value_': 'vops'
+      },
+      'doge': {
+        'wow': {
+          '_state_': '-',
+          '_value_': '',
+          '_state2_': '+',
+          '_value2_': 'so much'
+        }
+      },
+      'key': {
+        '_state_': ' ',
+        '_value_': 'value'
+      }
+    },
+    'setting1': {
+      '_state_': ' ',
+      '_value_': 'Value 1'
+    },
+    'setting3': {
+      '_state_': '-',
+      '_value_': True,
+      '_state2_': '+',
+      '_value2_': None
+    }
+  },
+  'group1': {
+    'foo': {
+      '_state_': ' ',
+      '_value_': 'bar'
+    },
+    'baz': {
+      '_state_': '-',
+      '_value_': 'bas',
+      '_state2_': '+',
+      '_value2_': 'bars'
+    },
+    'nest': {
+      '_state_': '-',
+      '_value_': {
+        'key': 'value'
+      },
+      '_state2_': '+',
+      '_value2_': 'str'
+    }
+  }
+}
