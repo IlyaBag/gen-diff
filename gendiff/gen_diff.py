@@ -1,13 +1,20 @@
 import json
 import yaml
-from gendiff.formatters import *  # noqa: F403
+import gendiff.formatters as gf
 
 
-FORMAT_ARGS = {
-    'stylish': stylish,  # noqa: F405
-    'plain': plain,  # noqa: F405
-    'json': json_output,  # noqa: F405
-    }
+STATES = {'deleted': '- ',
+          'added': '+ ',
+          'same': '  ',
+          'changed_from': '- ',
+          'changed_to': '+ ',
+          'nesting': '  '
+          }
+
+FORMAT_ARGS = {'stylish': gf.stylish,
+               'plain': gf.plain,
+               'json': gf.json_output
+               }
 
 
 def file_parse(path):
@@ -35,34 +42,24 @@ def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
         data2_unique_keys = data2_keys - data1_keys
 
         diff = {}
+
         for key in data1_unique_keys:
-            diff[key] = {
-                '_state_': '-',
-                '_value_': data1[key]
-            }
+            diff[(key, 'deleted')] = data1[key]
+
         for key in data2_unique_keys:
-            diff[key] = {
-                '_state_': '+',
-                '_value_': data2[key]
-            }
+            diff[(key, 'added')] = data2[key]
+
         for key in mutual_keys:
             value1 = data1[key]
             value2 = data2[key]
             if value1 == value2:
-                diff[key] = {
-                    '_state_': ' ',
-                    '_value_': value1
-                }
+                diff[(key, 'same')] = value1
             else:
                 if isinstance(value1, dict) and isinstance(value2, dict):
-                    diff[key] = inner(value1, value2)
+                    diff[(key, 'nesting')] = inner(value1, value2)
                 else:
-                    diff[key] = {
-                        '_state_': '-',
-                        '_value_': value1,
-                        '_state2_': '+',
-                        '_value2_': value2
-                    }
+                    diff[(key, 'changed_from')] = value1
+                    diff[(key, 'changed_to')] = value2
 
         return diff
 
