@@ -1,11 +1,11 @@
-def fix_syntax(string):
-    if isinstance(string, bool):
-        return str(string).lower()
-    if isinstance(string, int):
-        return string
-    if string is None:
+def fix_syntax(item):
+    if isinstance(item, bool):
+        return str(item).lower()
+    if isinstance(item, int):
+        return item
+    if item is None:
         return 'null'
-    return f"'{string}'"
+    return f"'{item}'"
 
 
 def is_leaf_node(item):

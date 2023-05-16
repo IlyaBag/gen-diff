@@ -6,13 +6,21 @@ STATES = {'deleted': '- ',
           'nesting': '  '}
 
 
+def fix_syntax(item):
+    if isinstance(item, bool):
+        return str(item).lower()
+    if item is None:
+        return 'null'
+    return item
+
+
 def stylish(data, replacer=' ', indent_length=4, depth=1) -> str:
     if not isinstance(data, dict):
-        return str(data)  # get_printable_value(data)  # переводим значение в строку
+        return fix_syntax(data)
 
     indent = replacer * (indent_length * depth - 2)
 
-    printable_diff = indent[:-2] + '{'
+    printable_diff = '{'
     
     keys = list(data.keys())
     keys.sort()
@@ -23,12 +31,6 @@ def stylish(data, replacer=' ', indent_length=4, depth=1) -> str:
         value = stylish(raw_value, replacer, indent_length, depth + 1)
         printable_diff += f'\n{indent}{STATES[state]}{diff_key}: {value}'
 
-    printable_diff += indent[:-2] + '\n}'
+    printable_diff += '\n' + indent[:-2] + '}'
 
     return printable_diff
-
-
-
-from tests.fixtures.mein_raw_diff_flat import diff
-
-print(stylish(diff))
