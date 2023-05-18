@@ -27,7 +27,7 @@ def nested_keys_marker(item):
     marked_dict = {}
     for key in item:
         value = item[key]
-        marked_dict[(key, 'nesting')] = nested_keys_marker(value)
+        marked_dict[(key, 'nested')] = nested_keys_marker(value)
     return marked_dict
 
 
@@ -60,8 +60,8 @@ def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
                 if isinstance(value1, dict) and isinstance(value2, dict):
                     diff[(key, 'nesting')] = inner(value1, value2)
                 else:
-                    diff[(key, 'changed_from')] = nested_keys_marker(value1)
-                    diff[(key, 'changed_to')] = nested_keys_marker(value2)
+                    diff[(key, 'changed')] = (nested_keys_marker(value1),
+                                              nested_keys_marker(value2))
 
         return diff
 

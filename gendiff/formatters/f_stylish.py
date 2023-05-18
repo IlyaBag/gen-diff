@@ -1,9 +1,8 @@
 STATES = {'deleted': '- ',
           'added': '+ ',
           'same': '  ',
-          'changed_from': '- ',
-          'changed_to': '+ ',
-          'nesting': '  '}
+          'nesting': '  ',
+          'nested': '  '}
 
 
 def fix_syntax(item):
@@ -14,7 +13,7 @@ def fix_syntax(item):
     return item
 
 
-def stylish(data, replacer=' ', indent_length=4, depth=1) -> str:
+def stylish(data, replacer=' ', indent_length=4, depth=1):
     if not isinstance(data, dict):
         return fix_syntax(data)
 
@@ -28,8 +27,14 @@ def stylish(data, replacer=' ', indent_length=4, depth=1) -> str:
     for key in keys:
         diff_key, state = key
         raw_value = data[key]
-        value = stylish(raw_value, replacer, indent_length, depth + 1)
-        printable_diff += f'\n{indent}{STATES[state]}{diff_key}: {value}'
+        if state == 'changed':
+            value1 = stylish(raw_value[0], replacer, indent_length, depth + 1)
+            value2 = stylish(raw_value[1], replacer, indent_length, depth + 1)
+            printable_diff += f'\n{indent}{STATES["deleted"]}{diff_key}: {value1}'
+            printable_diff += f'\n{indent}{STATES["added"]}{diff_key}: {value2}'
+        else:
+            value = stylish(raw_value, replacer, indent_length, depth + 1)
+            printable_diff += f'\n{indent}{STATES[state]}{diff_key}: {value}'
 
     printable_diff += '\n' + indent[:-2] + '}'
 
