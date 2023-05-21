@@ -1,13 +1,12 @@
 import json
 import yaml
-from gendiff.formatters import *  # noqa: F403
+import gendiff.formatters as gf
 
 
-format_args = {
-    'stylish': stylish,  # noqa: F405
-    'plain': plain,  # noqa: F405
-    'json': json_output,  # noqa: F405
-}
+FORMAT_ARGS = {'stylish': gf.stylish,
+               'plain': gf.plain,
+               'json': gf.json_output
+               }
 
 
 def file_parse(path):
@@ -20,6 +19,16 @@ def file_parse(path):
     elif file_extension == 'yml' or file_extension == 'yaml':
         data = yaml.load(open(path), Loader=yaml.Loader)
     return data
+
+
+def nested_keys_marker(item):
+    if not isinstance(item, dict):
+        return item
+    marked_dict = {}
+    for key in item:
+        value = item[key]
+        marked_dict[(key, 'nested')] = nested_keys_marker(value)
+    return marked_dict
 
 
 def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
@@ -35,38 +44,30 @@ def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
         data2_unique_keys = data2_keys - data1_keys
 
         diff = {}
+
         for key in data1_unique_keys:
-            diff[key] = {
-                '_state_': '-',
-                '_value_': data1[key]
-            }
+            diff[(key, 'deleted')] = nested_keys_marker(data1[key])
+
         for key in data2_unique_keys:
-            diff[key] = {
-                '_state_': '+',
-                '_value_': data2[key]
-            }
+            diff[(key, 'added')] = nested_keys_marker(data2[key])
+
         for key in mutual_keys:
             value1 = data1[key]
             value2 = data2[key]
             if value1 == value2:
-                diff[key] = {
-                    '_state_': ' ',
-                    '_value_': value1
-                }
+                diff[(key, 'same')] = nested_keys_marker(value1)
             else:
                 if isinstance(value1, dict) and isinstance(value2, dict):
-                    diff[key] = inner(value1, value2)
+                    diff[(key, 'nesting')] = inner(value1, value2)
                 else:
-                    diff[key] = {
-                        '_state_': '-',
-                        '_value_': value1,
-                        '_state2_': '+',
-                        '_value2_': value2
+                    diff[(key, 'changed')] = {
+                        ('changed', 'from'): nested_keys_marker(value1),
+                        ('changed', 'to'): nested_keys_marker(value2)
                     }
 
         return diff
 
-    formatter = format_args.get(output, lambda _: 'Unknown output format')
+    formatter = FORMAT_ARGS.get(output, lambda _: 'Unknown output format')
 
     try:
         return formatter(inner(file1, file2))
