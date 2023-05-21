@@ -60,8 +60,10 @@ def generate_diff(file_path1, file_path2, output='stylish'):  # noqa: C901
                 if isinstance(value1, dict) and isinstance(value2, dict):
                     diff[(key, 'nesting')] = inner(value1, value2)
                 else:
-                    diff[(key, 'changed')] = (nested_keys_marker(value1),
-                                              nested_keys_marker(value2))
+                    diff[(key, 'changed')] = {
+                        ('changed', 'from'): nested_keys_marker(value1),
+                        ('changed', 'to'): nested_keys_marker(value2)
+                    }
 
         return diff
 

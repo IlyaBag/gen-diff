@@ -1,12 +1,3 @@
-# STATES = {'deleted': '- ',
-#           'added': '+ ',
-#           'same': '  ',
-#           'changed_from': '- ',
-#           'changed_to': '+ ',
-#           'nesting': '  ',
-#           'nested': '  '}
-
-
 def fix_syntax(item):
     if isinstance(item, dict):
         return '[complex value]'
@@ -17,12 +8,6 @@ def fix_syntax(item):
     if item is None:
         return 'null'
     return f"'{item}'"
-
-
-# def is_leaf_node(item):
-#     if '_state_' in item and '_value_' in item:
-#         return True
-#     return False
 
 
 def plain(diff, key_path_global=[]):
@@ -40,29 +25,17 @@ def plain(diff, key_path_global=[]):
             nested_diff = plain(value, key_path)
             printable_diff.append(nested_diff)
         else:
-            # val1 = value.get('_value_')
-            # if isinstance(val1, dict):
-            #     val1 = '[complex value]'
-            # else:
-            #     val1 = fix_syntax(val1)
-            # val2 = value.get('_value2_', '')
-            # if isinstance(val2, dict):
-            #     val2 = '[complex value]'
-            # else:
-            #     val2 = fix_syntax(val2)
             path = '.'.join(key_path)
-            if state == 'changed':
-                value1 = fix_syntax(value[0])
-                value2 = fix_syntax(value[1])
-                diff_line = f"Property '{path}' was updated. From {value1} to {value2}"
-                printable_diff.append(diff_line)
-            else:
+            if state == 'deleted':
+                line = f"Property '{path}' was removed"
+                printable_diff.append(line)
+            elif state == 'added':
                 value = fix_syntax(value)
-                layouts = {
-                    "deleted": f"Property '{path}' was removed",
-                    "added": f"Property '{path}' was added with value: {value}",
-                    # "changed": f"Property '{path}' was updated. From {value1} to {value2}"
-                }
-                diff_line = layouts[state]
-                printable_diff.append(diff_line)
+                line = f"Property '{path}' was added with value: {value}"
+                printable_diff.append(line)
+            elif state == 'changed':
+                val1 = fix_syntax(value[('changed', 'from')])
+                val2 = fix_syntax(value[('changed', 'to')])
+                line = f"Property '{path}' was updated. From {val1} to {val2}"
+                printable_diff.append(line)
     return '\n'.join(printable_diff)

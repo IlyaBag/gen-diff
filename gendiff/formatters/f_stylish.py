@@ -20,7 +20,7 @@ def stylish(data, replacer=' ', indent_length=4, depth=1):
     indent = replacer * (indent_length * depth - 2)
 
     printable_diff = '{'
-    
+
     keys = list(data.keys())
     keys.sort()
 
@@ -28,10 +28,20 @@ def stylish(data, replacer=' ', indent_length=4, depth=1):
         diff_key, state = key
         raw_value = data[key]
         if state == 'changed':
-            value1 = stylish(raw_value[0], replacer, indent_length, depth + 1)
-            value2 = stylish(raw_value[1], replacer, indent_length, depth + 1)
-            printable_diff += f'\n{indent}{STATES["deleted"]}{diff_key}: {value1}'
-            printable_diff += f'\n{indent}{STATES["added"]}{diff_key}: {value2}'
+            val1 = stylish(
+                raw_value[('changed', 'from')],
+                replacer,
+                indent_length,
+                depth + 1
+            )
+            val2 = stylish(
+                raw_value[('changed', 'to')],
+                replacer,
+                indent_length,
+                depth + 1
+            )
+            printable_diff += f'\n{indent}{STATES["deleted"]}{diff_key}: {val1}'
+            printable_diff += f'\n{indent}{STATES["added"]}{diff_key}: {val2}'
         else:
             value = stylish(raw_value, replacer, indent_length, depth + 1)
             printable_diff += f'\n{indent}{STATES[state]}{diff_key}: {value}'
