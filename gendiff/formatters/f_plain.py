@@ -10,7 +10,7 @@ def fix_syntax(item):
     return f"'{item}'"
 
 
-def plain(diff, key_path_global=[]):
+def plain(diff, key_path_global=[]):  # noqa: C901
     printable_diff = []
     keys = list(diff.keys())
     keys.sort()

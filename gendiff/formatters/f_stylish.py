@@ -28,18 +28,10 @@ def stylish(data, replacer=' ', indent_length=4, depth=1):
         diff_key, state = key
         raw_value = data[key]
         if state == 'changed':
-            val1 = stylish(
-                raw_value[('changed', 'from')],
-                replacer,
-                indent_length,
-                depth + 1
-            )
-            val2 = stylish(
-                raw_value[('changed', 'to')],
-                replacer,
-                indent_length,
-                depth + 1
-            )
+            val1 = stylish(raw_value[('changed', 'from')],
+                           replacer, indent_length, depth + 1)
+            val2 = stylish(raw_value[('changed', 'to')],
+                           replacer, indent_length, depth + 1)
             printable_diff += f'\n{indent}{STATES["deleted"]}{diff_key}: {val1}'
             printable_diff += f'\n{indent}{STATES["added"]}{diff_key}: {val2}'
         else:

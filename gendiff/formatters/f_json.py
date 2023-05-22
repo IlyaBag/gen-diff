@@ -2,6 +2,10 @@ import json
 
 
 def untuple(data):
+    '''
+    Convert data type of source dict keys from tuple to string
+    for valid json syntax.
+    '''
     if not isinstance(data, dict):
         return data
     untupled_data = {}
