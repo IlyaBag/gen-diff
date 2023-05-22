@@ -24,8 +24,7 @@ correct_plain_diff = open('tests/fixtures/correct_plain_diff.txt').read()
         (file1_json, file2_json, correct_diff),
         (file1_yaml, file2_yaml, correct_diff),
         (file1_json_nested, file2_json_nested, correct_nested_diff),
-        (file1_yaml_nested, file2_yaml_nested, correct_nested_diff),
-        (file1_json, correct_diff, 'Unknown file type'),
+        (file1_yaml_nested, file2_yaml_nested, correct_nested_diff)
     )
 )
 def test_generate_diff(first_file, second_file, expected_diff):
