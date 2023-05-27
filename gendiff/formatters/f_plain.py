@@ -24,18 +24,20 @@ def plain(diff, key_path_global=[]):  # noqa: C901
         if state == 'nesting':
             nested_diff = plain(value, key_path)
             printable_diff.append(nested_diff)
-        else:
-            path = '.'.join(key_path)
-            if state == 'deleted':
-                line = f"Property '{path}' was removed"
-                printable_diff.append(line)
-            elif state == 'added':
-                value = fix_syntax(value)
-                line = f"Property '{path}' was added with value: {value}"
-                printable_diff.append(line)
-            elif state == 'changed':
-                val1 = fix_syntax(value[('changed', 'from')])
-                val2 = fix_syntax(value[('changed', 'to')])
-                line = f"Property '{path}' was updated. From {val1} to {val2}"
-                printable_diff.append(line)
+            continue
+        path = '.'.join(key_path)
+        if state == 'deleted':
+            line = f"Property '{path}' was removed"
+            printable_diff.append(line)
+            continue
+        if state == 'added':
+            value = fix_syntax(value)
+            line = f"Property '{path}' was added with value: {value}"
+            printable_diff.append(line)
+            continue
+        if state == 'changed':
+            val1 = fix_syntax(value[('changed', 'from')])
+            val2 = fix_syntax(value[('changed', 'to')])
+            line = f"Property '{path}' was updated. From {val1} to {val2}"
+            printable_diff.append(line)
     return '\n'.join(printable_diff)
