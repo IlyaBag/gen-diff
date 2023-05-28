@@ -1,8 +1,11 @@
-STATES = {'deleted': '- ',
-          'added': '+ ',
-          'same': '  ',
-          'nesting': '  ',
-          'nested': '  '}
+import gendiff.diff_states as ds
+
+
+STATES = {ds.DELETED: '- ',
+          ds.ADDED: '+ ',
+          ds.SAME: '  ',
+          ds.NESTING: '  ',
+          ds.NESTED: '  '}
 
 
 def fix_syntax(item):
@@ -27,13 +30,13 @@ def stylish(data, replacer=' ', indent_length=4, depth=1):
     for key in keys:
         diff_key, state = key
         raw_value = data[key]
-        if state == 'changed':
-            val1 = stylish(raw_value[('changed', 'from')],
+        if state == ds.CHANGED:
+            val1 = stylish(raw_value[ds.CHANGED_FROM],
                            replacer, indent_length, depth + 1)
-            val2 = stylish(raw_value[('changed', 'to')],
+            val2 = stylish(raw_value[ds.CHANGED_TO],
                            replacer, indent_length, depth + 1)
-            printable_diff += f'\n{indent}{STATES["deleted"]}{diff_key}: {val1}'
-            printable_diff += f'\n{indent}{STATES["added"]}{diff_key}: {val2}'
+            printable_diff += f'\n{indent}{STATES[ds.DELETED]}{diff_key}: {val1}'
+            printable_diff += f'\n{indent}{STATES[ds.ADDED]}{diff_key}: {val2}'
         else:
             value = stylish(raw_value, replacer, indent_length, depth + 1)
             printable_diff += f'\n{indent}{STATES[state]}{diff_key}: {value}'
