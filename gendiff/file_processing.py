@@ -2,10 +2,10 @@ import json
 import yaml
 
 
-def open_file(path: str):
+def get_file_type(path: str) -> str:
     file_extension = path.rsplit(sep='.', maxsplit=1)[1]
     file_extension.lower()
-    return open(path), file_extension
+    return file_extension
 
 
 def parse_file(file, extension):
