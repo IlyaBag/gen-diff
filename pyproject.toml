@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hexlet-code"
-version = "0.7.1"
+version = "0.7.2"
 description = "diff generator"
 authors = ["Ilya Bagrov <ilya.b.only@gmail.ru>"]
 readme = "README.md"
