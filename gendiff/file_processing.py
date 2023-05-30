@@ -2,6 +2,11 @@ import json
 import yaml
 
 
+PARSERS = {'json': json.load,
+           'yml': lambda obj: yaml.load(obj, Loader=yaml.Loader),
+           'yaml': lambda obj: yaml.load(obj, Loader=yaml.Loader)}
+
+
 def get_file_type(path: str) -> str:
     file_extension = path.rsplit(sep='.', maxsplit=1)[1]
     file_extension.lower()
@@ -9,7 +14,5 @@ def get_file_type(path: str) -> str:
 
 
 def parse_file(file, extension):
-    if extension == 'json':
-        return json.load(file)
-    if extension in ('yml', 'yaml'):
-        return yaml.load(file, Loader=yaml.Loader)
+    parser = PARSERS[extension]
+    return parser(file)

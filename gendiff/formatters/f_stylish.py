@@ -41,6 +41,6 @@ def stylish(data, replacer=' ', indent_length=4, depth=1):
             value = stylish(raw_value, replacer, indent_length, depth + 1)
             printable_diff += f'\n{indent}{STATES[state]}{diff_key}: {value}'
 
-    printable_diff += '\n' + indent[:-2] + '}'
+    printable_diff += f'\n{indent[:-2]}{"}"}'
 
     return printable_diff
